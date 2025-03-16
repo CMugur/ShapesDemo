@@ -5,11 +5,13 @@ using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Components")]
     [SerializeField] private GameView _gameView;
     [SerializeField] private Shape _shapePrefab;
     private readonly List<Shape> _shapeInstances = new();
     [SerializeField] private Timer _timer;
     
+    [Header("Settings")]
     [SerializeField] private int _shapesToSpawn = 10;
     [SerializeField] private int _roundTimeMS = 10000;
     [SerializeField] private int _delayBetweenRoundsMS = 2000;
@@ -73,9 +75,9 @@ public class GameManager : MonoBehaviour
         {
             var shape = Instantiate(_shapePrefab, transform);
             shape.DrawPolygon(Random.Range(ShapeHelper.MIN_SIDES_COUNT, ShapeHelper.MAX_SIDES_COUNT + 1));
+            shape.SetRandomColor();
             shape.transform.position = ScreenUtils.GetRandomPositionInsideCameraView(0);
             shape.GetComponent<TapHandler>().OnDoubleTap.AddListener(OnDoubleTapShape);
-            shape.SetRandomColor();
             _shapeInstances.Add(shape);
             count--;
         }
@@ -97,6 +99,7 @@ public class GameManager : MonoBehaviour
         {
             _timer.UpdateRemainingMS(-_mistakeTimerPenaltyMS);
             _gameView.OnPenaltyApplied();
+            if (shape != null) shape.ParticleSystem.gameObject.SetActive(false);
             return;
         }
         EndRound(false);

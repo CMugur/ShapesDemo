@@ -8,7 +8,9 @@ public class Shape : MonoBehaviour
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private Animator _animator;
     [SerializeField] private AudioSource _audioSource;
-
+    [SerializeField] private ParticleSystem _particleSystem;
+    public ParticleSystem ParticleSystem => _particleSystem;
+    
     [Header("Settings")]
     [SerializeField] private int _radius;
     private Vector2Int _textureSize => Vector2Int.one * _radius * 2;
@@ -29,6 +31,7 @@ public class Shape : MonoBehaviour
         SetRandomColor();
         _animator.Play("Wobble");
         _audioSource.Play();
+        _particleSystem.Play();
     }
 
     public void SetRandomColor()

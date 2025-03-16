@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class DemoView : MonoBehaviour
 {
+    [Header("Components")]
     [SerializeField] private Slider _shapeSidesCountSlider;
     [SerializeField] private TextMeshProUGUI _shapeSidesCountText;
     [SerializeField] private Shape _shape;
@@ -27,6 +28,7 @@ public class DemoView : MonoBehaviour
     {
         _shapeSidesCountText.text = _shapeSidesCountSlider.value.ToString();
         _shape.DrawPolygon((int)_shapeSidesCountSlider.value);
+        _shape.SetRandomColor();
     }
 
     private void OnValueChangedShapeSidesCountSlider(float value)
