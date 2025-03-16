@@ -7,6 +7,13 @@ public static class ShapeHelper
     public const int MIN_SIDES_COUNT = 3;
     public const int MAX_SIDES_COUNT = 10;
 
+    /// <summary>
+    /// Generates a sprite of a shape
+    /// </summary>
+    /// <param name="sidesCount">The number of sides that the shape has</param>
+    /// <param name="radius">The radius of the circle that surrounds the shape</param>
+    /// <param name="textureSize">The size of the texture</param>
+    /// <returns></returns>
     public static Sprite GenerateSprite(int sidesCount, float radius, Vector2Int textureSize)
     {
         var vertices = GetVertices(sidesCount, radius);
@@ -28,6 +35,12 @@ public static class ShapeHelper
         return sprite;
     }
     
+    /// <summary>
+    /// Generates points found on a circle circumference 
+    /// </summary>
+    /// <param name="sidesCount">The number of sides that the shape has</param>
+    /// <param name="radius">The radius of the circle that we want to generate points on</param>
+    /// <returns></returns>
     public static Vector2[] GetVertices(int sidesCount, float radius)
     {
         sidesCount = ClampSidesCount(sidesCount);
@@ -48,6 +61,11 @@ public static class ShapeHelper
         return vertices;
     }
 
+    /// <summary>
+    /// Generates the triangle indices for the shape we want to render
+    /// </summary>
+    /// <param name="sidesCount">The number of sides that the shape has</param>
+    /// <returns></returns>
     private static ushort[] GetTrianglesIndices(int sidesCount)
     {
         sidesCount = ClampSidesCount(sidesCount);
