@@ -6,17 +6,33 @@ public class Shape : MonoBehaviour
     [Header("Components")]
     [SerializeField] private PolygonCollider2D _polygonCollider;
     [SerializeField] private SpriteRenderer _spriteRenderer;
-    public SpriteRenderer SpriteRenderer => _spriteRenderer;
-    
-    public void Initialize(Vector2[] vertices)
+    [SerializeField] private Animator _animator;
+    [SerializeField] private AudioSource _audioSource;
+
+    [Header("Settings")]
+    [SerializeField] private int _radius;
+    private Vector2Int _textureSize => Vector2Int.one * _radius * 2;
+
+    public int SidesCount { get; private set; }
+
+    public void DrawPolygon(int sidesCount)
     {
-        transform.name = ShapeHelper.GetShapeName(vertices.Length);
-        _polygonCollider.points = vertices;
-        _polygonCollider.offset = Vector2.one * 0.5f;        
+        SidesCount = ShapeHelper.ClampSidesCount(sidesCount);
+        if (_spriteRenderer.sprite != null) Destroy(_spriteRenderer.sprite);
+        _spriteRenderer.sprite = ShapeHelper.GenerateSprite(sidesCount, _radius, _textureSize);
+        _polygonCollider.points = ShapeHelper.GetVertices(sidesCount, 0.5f);
+        transform.name = ShapeHelper.GetShapeName(sidesCount);
+    }
+
+    public void Interact()
+    {
+        SetRandomColor();
+        _animator.Play("Wobble");
+        _audioSource.Play();
     }
 
     public void SetRandomColor()
     {
-        SpriteRenderer.color = Random.ColorHSV();
+        _spriteRenderer.color = Random.ColorHSV();        
     }
 }

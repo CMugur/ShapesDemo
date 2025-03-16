@@ -6,20 +6,23 @@ public class TapHandler : MonoBehaviour
 {
     [Header("Settings")]
     [SerializeField] private uint _doubleTapDeltaMS = 250;
+    public bool Interactable;
     
     [Header("Events")]
-    public UnityEvent OnSingleTap;
-    public UnityEvent OnDoubleTap;
+    public UnityEvent<GameObject> OnSingleTap;
+    public UnityEvent<GameObject> OnDoubleTap;
 
     private DateTime _lastTapTime = DateTime.MinValue;
     
     private void OnMouseDown()
     {
-        OnSingleTap?.Invoke();
+        if (!Interactable) return;
+        
+        OnSingleTap?.Invoke(gameObject);
         var timeSinceLastTapMS = (DateTime.Now - _lastTapTime).TotalMilliseconds;
         if (timeSinceLastTapMS <= _doubleTapDeltaMS)
         {
-            OnDoubleTap?.Invoke();
+            OnDoubleTap?.Invoke(gameObject);
             _lastTapTime = DateTime.MinValue;
             return;
         }
